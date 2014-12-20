@@ -1,0 +1,92 @@
+nmap s tgoogle<Space>
+nmap h <C-p>
+nmap l <C-n>
+nnoremap j 5j
+nnoremap k 5k
+nnoremap <C-j> 20j
+nnoremap <C-k> 20k
+
+" クイックリンク関連
+set hintchars=fjklasdhguionmerwc
+" undo保持数
+set! browser.sessionstore.max_tabs_undo=30
+hi Hint z-index:5000; font-family:Menlo; font-size:16px; color:white; background-color:red; border-color:ButtonShadow; border-width:0px; border-style:solid; padding:0px 2px 0px 2px; position:absolute;
+" ページのアクセスキーを無効化
+set! ui.key.generalAccessKey=0
+" OSのキーバインドを再現
+noremap <C-a> <Insert><C-a><Insert>
+noremap <C-c> <Insert><C-c><Insert>
+noremap <C-v> <Insert><C-v><Insert>
+noremap <C-z> <Insert><C-z><Insert>
+
+inoremap <C-a> <Insert><C-a><Insert>
+inoremap <C-c> <Insert><C-c><Insert>
+inoremap <C-v> <Insert><C-v><Insert>
+inoremap <C-x> <Insert><C-x><Insert>
+inoremap <C-z> <Insert><C-z><Insert>
+
+cnoremap <C-a> <Insert><C-a><Insert>
+cnoremap <C-c> <Insert><C-c><Insert>
+cnoremap <C-v> <Insert><C-v><Insert>
+cnoremap <C-x> <Insert><C-x><Insert>
+cnoremap <C-z> <Insert><C-z><Insert>
+
+" コマンドラインではimeをOff
+style -name commandline-ime chrome://* #liberator-commandline-command input {ime-mode: inactive;}
+"サジェストエンジンの設定
+set suggestengines=google
+"デフォルト検索エンジン(検索バーの管理→キーワードでgoogleをgoに変更しておく)
+set defsearch=google
+
+" 検索語のハイライト
+set hlsearch
+"検索欄などにフォーカスするのを防ぐ
+set focuscontent
+" 補完設定
+set autocomplete
+" :[tab]open の補完対象と順番
+set complete=Ssl
+js <<EOM
+liberator.globalVariables.stella_nico_use_comment=true
+function addLocalMappings(buffer, maps) {
+maps.forEach(
+function (map) {
+let [cmd, action, extra] = map;
+let actionFunc = action;
+extra || (extra = {});
+
+if (typeof action == "string") {
+if (action.charAt(0) == ':')
+actionFunc = extra.open ? function () commandline.open("", action, modes.EX)
+: function () liberator.execute(action);
+else
+actionFunc = function () events.feedkeys(action, extra.noremap, true);
+}
+extra.matchingUrls = buffer;
+mappings.addUserMap(
+[modes.NORMAL],
+[cmd],
+"Local mapping for " + buffer,
+        actionFunc,
+        extra
+      );
+    }
+  );
+}
+addLocalMappings(
+  /^(http:\/\/(es|www).nicovideo.jp\/(watch|playlist\/mylist)|http:\/\/(jp|www)\.youtube\.com\/watch|http:\/\/(www\.)?vimeo\.com\/(channels\/(hd)?#)?\d+)/,
+  [
+    ['<C-g>', ':pageinfo S', ],
+    ['p', ':stplay', ],
+    ['m', ':stmute', ],
+    ['c', ':stcomment', ],
+    ['zz', ':stlarge', ],
+    ['s', ':stseek! 15', ],
+    ['S', ':stseek! -15', ],
+    ['v', ':stvolume! 10', ],
+    ['V', ':stvolume! -10', ],
+    ['q', ':strelations ', {open: true}],
+    ['Q', ':strelations! ', {open: true}],
+  ]
+);
+EOM 
