@@ -104,14 +104,26 @@ set tabstop=4
 set shiftwidth=4
 set shiftround
 "------------------------------------------------------------
-"ステータスライン
-:set laststatus=2 
-"------------------------------------------------------------
+" 見た目関連の設定
+set laststatus=2  " ステータスラインを表示する時
+set cursorline   " 現在行に下線を引く-
 
 "インデント設定
 set autoindent
 set expandtab
 "------------------------------------------------------------
+" エンコーディング関連
+set encoding=utf-8     " vim内部で通常使用する文字エンコーディングを設定
+set charconvert=utf-8    " 文字エンコーディングに使われるexpressionを定める
+set fileencoding=utf-8    " バッファのファイルエンコーディングを指定
+set fileencodings=utf-8,euc-jp,sjis " 既存ファイルを開く際の文字コード自動判別
+
+"------------------------------------------------------------
+" 設定の保存と復元
+autocmd BufWinLeave ?* silent mkview
+autocmd BufWinEnter ?* silent loadview
+"------------------------------------------------------------
+
 """"""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""
 """""NeoBundlePlugins設定"""""
@@ -298,3 +310,6 @@ let g:Tex_CompileRule_pdf = 'dvipdfmx $*.dvi'
 let g:Tex_ViewRule_dvi = 'xdvi'
 let g:Tex_ViewRule_pdf = 'evince'
 """"""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""
+
