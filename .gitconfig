@@ -1,0 +1,22 @@
+[user]
+	name = Naoya Shibahara
+	email = naoya@cps.im.dendai.ac.jp
+[core]
+	excludesfile = /Users/naoya/.gitignore_global
+	editor = vim -c \"set fenc=utf-8\"
+[merge]
+    ff = false
+[pull]
+    ff = only
+[alias]
+    alias = !"f(){ git config --get-regexp alias|cut -d'.' -f2|if [ -z $1 ];then cut -d' ' -f1|column; else grep $1' '; fi }; f"
+    me = !git config --get-regexp user
+    st = !"git stash list && git status --short --branch"
+    co = checkout
+    cob = checkout -b
+    cm = commit
+    pl = pull
+    cancel = reset --soft HEAD^
+    pod = push origin develop
+    pom = push origin master
+    empty-commit = commit --allow-empty
