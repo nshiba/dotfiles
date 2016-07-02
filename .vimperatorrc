@@ -31,6 +31,9 @@ cnoremap <C-v> <Insert><C-v><Insert>
 cnoremap <C-x> <Insert><C-x><Insert>
 cnoremap <C-z> <Insert><C-z><Insert>
 
+" Treeの切り替え
+nmap <C-h> :js TreeStyleTabBrowserAutoHide.toggleMode()<Enter>
+
 " コマンドラインではimeをOff
 style -name commandline-ime chrome://* #liberator-commandline-command input {ime-mode: inactive;}
 "サジェストエンジンの設定
@@ -46,47 +49,48 @@ set focuscontent
 set autocomplete
 " :[tab]open の補完対象と順番
 set complete=Ssl
-js <<EOM
-liberator.globalVariables.stella_nico_use_comment=true
-function addLocalMappings(buffer, maps) {
-maps.forEach(
-function (map) {
-let [cmd, action, extra] = map;
-let actionFunc = action;
-extra || (extra = {});
 
-if (typeof action == "string") {
-if (action.charAt(0) == ':')
-actionFunc = extra.open ? function () commandline.open("", action, modes.EX)
-: function () liberator.execute(action);
-else
-actionFunc = function () events.feedkeys(action, extra.noremap, true);
-}
-extra.matchingUrls = buffer;
-mappings.addUserMap(
-[modes.NORMAL],
-[cmd],
-"Local mapping for " + buffer,
-        actionFunc,
-        extra
-      );
-    }
-  );
-}
-addLocalMappings(
-  /^(http:\/\/(es|www).nicovideo.jp\/(watch|playlist\/mylist)|http:\/\/(jp|www)\.youtube\.com\/watch|http:\/\/(www\.)?vimeo\.com\/(channels\/(hd)?#)?\d+)/,
-  [
-    ['<C-g>', ':pageinfo S', ],
-    ['p', ':stplay', ],
-    ['m', ':stmute', ],
-    ['c', ':stcomment', ],
-    ['zz', ':stlarge', ],
-    ['s', ':stseek! 15', ],
-    ['S', ':stseek! -15', ],
-    ['v', ':stvolume! 10', ],
-    ['V', ':stvolume! -10', ],
-    ['q', ':strelations ', {open: true}],
-    ['Q', ':strelations! ', {open: true}],
-  ]
-);
-EOM 
+" js <<EOM
+" liberator.globalVariables.stella_nico_use_comment=true
+" function addLocalMappings(buffer, maps) {
+" maps.forEach(
+" function (map) {
+" let [cmd, action, extra] = map;
+" let actionFunc = action;
+" extra || (extra = {});
+" 
+" if (typeof action == "string") {
+" if (action.charAt(0) == ':')
+" actionFunc = extra.open ? function () commandline.open("", action, modes.EX)
+" : function () liberator.execute(action);
+" else
+" actionFunc = function () events.feedkeys(action, extra.noremap, true);
+" }
+" extra.matchingUrls = buffer;
+" mappings.addUserMap(
+" [modes.NORMAL],
+" [cmd],
+" "Local mapping for " + buffer,
+"         actionFunc,
+"         extra
+"       );
+"     }
+"   );
+" }
+" addLocalMappings(
+"   /^(http:\/\/(es|www).nicovideo.jp\/(watch|playlist\/mylist)|http:\/\/(jp|www)\.youtube\.com\/watch|http:\/\/(www\.)?vimeo\.com\/(channels\/(hd)?#)?\d+)/,
+"   [
+"     ['<C-g>', ':pageinfo S', ],
+"     ['p', ':stplay', ],
+"     ['m', ':stmute', ],
+"     ['c', ':stcomment', ],
+"     ['zz', ':stlarge', ],
+"     ['s', ':stseek! 15', ],
+"     ['S', ':stseek! -15', ],
+"     ['v', ':stvolume! 10', ],
+"     ['V', ':stvolume! -10', ],
+"     ['q', ':strelations ', {open: true}],
+"     ['Q', ':strelations! ', {open: true}],
+"   ]
+" );
+" EOM 

@@ -14,25 +14,26 @@ NeoBundle 'Align'
 NeoBundle 'mattn/emmet-vim' 
 NeoBundle 'davidhalter/jedi-vim'
 NeoBundle 'scrooloose/syntastic.git'
-NeoBundle 'nathanaelkane/vim-indent-guides'
+" NeoBundle 'nathanaelkane/vim-indent-guides'
+NeoBundle 'groenewege/vim-less' " less
+NeoBundle 'scrooloose/nerdtree' " ファイルをtree表示してくれる
+NeoBundle 'tomtom/tcomment_vim' " コメントON/OFFを手軽に実行
+NeoBundle 'Shougo/neocomplete.vim' " 自動補完 
+NeoBundle 'itchyny/lightline.vim' " lightline
+NeoBundle '5t111111/neat-json.vim' " JSON
+NeoBundle 'alpaca-tc/alpaca_powertabline' " powerline
+NeoBundle 'Lokaltog/vim-powerline' " powerline
+NeoBundle 'lervag/vimtex' " vimtex
+NeoBundle 'thinca/vim-quickrun' " vim-quickrun
+NeoBundle 'mattn/webapi-vim' " webapi-vim
+NeoBundle 'Yggdroot/indentLine' " indentLine
+NeoBundle 'kakkyz81/evervim' " evervim
+NeoBundle 'plasticboy/vim-markdown'
+NeoBundle 'kannokanno/previm'
+NeoBundle 'tyru/open-browser.vim'
 
-" less
-NeoBundle 'groenewege/vim-less'
-
-" ファイルをtree表示してくれる
-NeoBundle 'scrooloose/nerdtree'
-
-" コメントON/OFFを手軽に実行
-NeoBundle 'tomtom/tcomment_vim'
-
-" 自動補完 
-NeoBundle 'Shougo/neocomplete.vim'
-
-" lightline
-NeoBundle 'itchyny/lightline.vim'
-
-" JSON
-NeoBundle '5t111111/neat-json.vim'
+" ColorScheme
+NeoBundle 'tomasr/molokai'
 
 call neobundle#end()
 
@@ -43,9 +44,8 @@ NeoBundleCheck
 " NeoBundle設定ここまで
 "------------------------------------------------------------
 
-"font
-set guifont=Osaka－等幅\ 15
-
+" バックアップファイルを作成しない
+set nobackup
 "キーマッピング
 "s無効化
 nnoremap s <Nop>
@@ -83,7 +83,13 @@ nnoremap <C-k> 10k
 "一般設定
 set number
 
+set noundofile
+
+set list
+
 syntax on
+colorscheme molokai
+
 "バックスペース復活
 set backspace=indent,eol,start
 
@@ -95,33 +101,44 @@ source $VIMRUNTIME/macros/matchit.vim
 " 対応するペアの組み合わせ
 let b:match_words = "(<if>:<end if>)"
 
-"------------------------------------------------------------
+" autocmd無効化
+" https://gist.github.com/rbtnn/8540338 （一部修正）
+augroup auto_comment_off
+    autocmd!
+    autocmd BufEnter * setlocal formatoptions-=r
+    autocmd BufEnter * setlocal formatoptions-=o
+augroup END
 
+" 改行
+nnoremap <D-Enter> <S-i><Enter><Esc>
 
 ""タブ
 set expandtab
 set tabstop=4
 set shiftwidth=4
 set shiftround
-"------------------------------------------------------------
+
 " 見た目関連の設定
 set laststatus=2  " ステータスラインを表示する時
 set cursorline   " 現在行に下線を引く-
 
 "インデント設定
 set autoindent
-set expandtab
-"------------------------------------------------------------
+
 " エンコーディング関連
 set encoding=utf-8     " vim内部で通常使用する文字エンコーディングを設定
-set charconvert=utf-8    " 文字エンコーディングに使われるexpressionを定める
+" set charconvert=utf-8    " 文字エンコーディングに使われるexpressionを定める
 set fileencoding=utf-8    " バッファのファイルエンコーディングを指定
 set fileencodings=utf-8,euc-jp,sjis " 既存ファイルを開く際の文字コード自動判別
 
-"------------------------------------------------------------
 " 設定の保存と復元
 autocmd BufWinLeave ?* silent mkview
 autocmd BufWinEnter ?* silent loadview
+
+"------------------------------------------------------------
+" python path
+
+let $PYTHON_DLL = "/usr/local/Cellar/python/2.7.9/Frameworks/Python.framework/Versions/2.7/Python"
 "------------------------------------------------------------
 
 """"""""""""""""""""""""""""""
@@ -129,16 +146,56 @@ autocmd BufWinEnter ?* silent loadview
 """""NeoBundlePlugins設定"""""
 """"""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""
+"------------------------------------------------------------------------------------------------------------------------
+" indentLine
+"------------------------------------------------------------------------------------------------------------------------
+" emmet
+" let g:user_emmet_settings = webapi#json#decode(join(readfile(expand('~/.emmet_snippets_custom.json')), "\n"))
+let g:user_emmet_settings = {
+            \   'lang' : 'ja'
+            \   }
+
+let g:user_emmet_settings = {
+            \   'snippets': {
+            \       'filters' : 'html',
+            \       'html5' : '<!DOCTYPE html>
+            \                   <html>
+            \                   <head>
+            \                   <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">
+            \                   <title></title>
+            \                   <meta charset=\"utf-8\">
+            \                   <meta name=\"description\" content=\"\">
+            \                   <meta name=\"author\" content=\"\">
+            \                   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
+            \                   <link rel=\"stylesheet\" href=\"\">
+            \                   <!--&#91;if lt IE 9&#93;>
+            \                   <script src=\"//cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js\"></script>
+            \                   <script src=\"//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js\"></script>
+            \                   <!&#91;endif&#93;-->
+            \                   <link rel=\"shortcut icon\" href=\"\">
+            \                   </head>
+            \                   <body>
+            \                   <!-- Place your content here -->
+            \                   <!-- SCRIPTS -->
+            \                   <!-- Example: <script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script> -->
+            \                   </body>
+            \                   </html>'
+            \   }
+            \ }
+
+
+"------------------------------------------------------------------------------------------------------------------------
 " vim-indent-guides
 set t_Co=256
-let g:indent_guides_auto_colors = 0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=3
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd   ctermbg=8
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven  ctermbg=236
-let g:indent_guides_enable_on_vim_startup=1
-let g:indent_guides_guide_size=1
+" let g:indent_guides_auto_colors = 0
+" autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#a9a9a9   ctermbg=3
+" autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#696969 ctermbg=4
+" autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd   ctermbg=8
+" autocmd VimEnter,Colorscheme * :hi IndentGuidesEven  ctermbg=236
+" let g:indent_guides_enable_on_vim_startup=1
+" let g:indent_guides_guide_size=1
 
+"------------------------------------------------------------------------------------------------------------------------
 " jedi-vim
 " docstringは表示しない
 autocmd FileType python setlocal completeopt-=preview
@@ -156,6 +213,7 @@ endif
 let g:neocomplete#force_omni_input_patterns.python = '\h\w*\|[^.\t]\.\w*'
 
 
+"------------------------------------------------------------------------------------------------------------------------
 " neocomplete
 " 自動起動
 let g:neocomplete#enable_at_startup = 1
@@ -194,7 +252,9 @@ let g:neocomplete_dictionary_filetype_lists = {
             \ 'default' : ''
             \ }
 
+"------------------------------------------------------------------------------------------------------------------------
 " lightline
+
 let g:lightline = {
             \ 'colorscheme': 'wombat',
             \ 'mode_map': {'c': 'NORMAL'},
@@ -270,10 +330,7 @@ inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 
-"------------------------------------------------------------
-"------------------------------------------------------------
-"------------------------------------------------------------
-"------------------------------------------------------------
+"------------------------------------------------------------------------------------------------------------------------
 
 """"""""""""""""""""""""""""""
 " 全角スペースの表示
@@ -291,25 +348,22 @@ if has('syntax')
     augroup END
     call ZenkakuSpace()
 endif
-""""""""""""""""""""""""""""""
-""""""""""""""""""""""""""""""
-""latex""""""""""""""""""""""
-""""""""""""""""""""""""""""""
-""""""""""""""""""""""""""""""
-filetype plugin on
-filetype indent on
-set shellslash
-set grepprg=grep\ -nH\ $*
 
-" コンパイル時に使用するコマンド
-let g:Tex_CompileRule_dvi = 'platex --interaction=nonstopmode $*' 
-let g:Tex_BibtexFlavor = 'jbibtex'
-let g:Tex_CompileRule_pdf = 'dvipdfmx $*.dvi'
-"
-" ファイルのビューワー
-let g:Tex_ViewRule_dvi = 'xdvi'
-let g:Tex_ViewRule_pdf = 'evince'
-""""""""""""""""""""""""""""""
-""""""""""""""""""""""""""""""
-""""""""""""""""""""""""""""""
+"------------------------------------------------------------------------------------------------------------------------
+" quickrun
+let g:quickrun_config = {
+\   "_" : {
+\       "outputter/buffer/split" : ":botright",
+\       "outputter/buffer/close_on_empty" : 1
+\   },
+\}
 
+" ------------------------------------------------------------------------------------------------------------------------
+" evervim
+let g:evervim_devtoken='S=s496:U=569ac2c:E=15a49eacebc:C=152f239a0a8:P=1cd:A=en-devtoken:V=2:H=8747a02285479fddea3486f291c25492'
+
+" ------------------------------------------------------------------------------------------------------------------------
+" markdown view
+au BufRead,BufNewFile *.md set filetype=markdown
+let g:previm_open_cmd = 'open -a Firefox'
+nmap <F5> :PrevimOpen<CR>
