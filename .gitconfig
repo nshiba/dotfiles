@@ -1,22 +1,22 @@
-[user]
-	name = Naoya Shibahara
-	email = naoya@cps.im.dendai.ac.jp
+[ghq]
+    root = /Users/nshiba/work/src
 [core]
-	excludesfile = /Users/naoya/.gitignore_global
-	editor = vim -c \"set fenc=utf-8\"
+    editor = vim -c \"set fenc=utf-8\"
+    excludesfile = /Users/nshiba/.gitignore_global
+[url "github:"]
+    InsteadOf = https://github.com/
+    InsteadOf = git@github.com:
+[user]
+    name = nshiba
+    email = naoya.shiba310@gmail.com
 [merge]
     ff = false
 [pull]
     ff = only
 [alias]
-    alias = !"f(){ git config --get-regexp alias|cut -d'.' -f2|if [ -z $1 ];then cut -d' ' -f1|column; else grep $1' '; fi }; f"
-    me = !git config --get-regexp user
-    st = !"git stash list && git status --short --branch"
     co = checkout
     cob = checkout -b
-    cm = commit
-    pl = pull
+    cm = commit -m
     cancel = reset --soft HEAD^
-    pod = push origin develop
     pom = push origin master
     empty-commit = commit --allow-empty

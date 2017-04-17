@@ -1,49 +1,44 @@
-set nocompatible
-" NeoBundle設定
-filetype off
-
-if has('vim_starting')
-    set runtimepath+=~/.vim/bundle/neobundle.vim
-    call neobundle#begin(expand('~/.vim/bundle'))
+"dein Scripts-----------------------------
+if &compatible
+    set nocompatible               " Be iMproved
 endif
 
-" ここにインストールしたプラグインのリストを書く
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'h1mesuke/unite-outline'
-NeoBundle 'Align'
-NeoBundle 'mattn/emmet-vim' 
-NeoBundle 'davidhalter/jedi-vim'
-NeoBundle 'scrooloose/syntastic.git'
-" NeoBundle 'nathanaelkane/vim-indent-guides'
-NeoBundle 'groenewege/vim-less' " less
-NeoBundle 'scrooloose/nerdtree' " ファイルをtree表示してくれる
-NeoBundle 'tomtom/tcomment_vim' " コメントON/OFFを手軽に実行
-NeoBundle 'Shougo/neocomplete.vim' " 自動補完 
-NeoBundle 'itchyny/lightline.vim' " lightline
-NeoBundle '5t111111/neat-json.vim' " JSON
-NeoBundle 'alpaca-tc/alpaca_powertabline' " powerline
-NeoBundle 'Lokaltog/vim-powerline' " powerline
-NeoBundle 'lervag/vimtex' " vimtex
-NeoBundle 'thinca/vim-quickrun' " vim-quickrun
-NeoBundle 'mattn/webapi-vim' " webapi-vim
-NeoBundle 'Yggdroot/indentLine' " indentLine
-NeoBundle 'kakkyz81/evervim' " evervim
-NeoBundle 'plasticboy/vim-markdown'
-NeoBundle 'kannokanno/previm'
-NeoBundle 'tyru/open-browser.vim'
+" Required:
+set runtimepath+=/Users/nshiba/Project/dein/repos/github.com/Shougo/dein.vim
 
-" ColorScheme
-NeoBundle 'tomasr/molokai'
+" Required:
+if dein#load_state('/Users/nshiba/Project/dein')
+    call dein#begin('/Users/nshiba/Project/dein')
 
-call neobundle#end()
+    " Let dein manage dein
+    " Required:
+    call dein#add('/Users/nshiba/Project/dein/repos/github.com/Shougo/dein.vim')
+    
+    " Add or remove your plugins here:
+    call dein#add('Shougo/neosnippet.vim')
+    call dein#add('Shougo/neosnippet-snippets')
+    call dein#add('mattn/emmet-vim')
+    
+    " You can specify revision/branch/tag.
+    " call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
+    
+    " Required:
+    call dein#end()
+    call dein#save_state()
+endif
 
-filetype plugin on
-filetype indent on
+" Required:
+filetype plugin indent on
+syntax enable
 
-NeoBundleCheck
-" NeoBundle設定ここまで
-"------------------------------------------------------------
+" If you want to install not installed plugins on startup.
+if dein#check_install()
+    call dein#install()
+endif
 
+"End dein Scripts-------------------------
+
+" endfunction
 " バックアップファイルを作成しない
 set nobackup
 "キーマッピング
@@ -82,13 +77,12 @@ nnoremap <C-k> 10k
 
 "一般設定
 set number
-
+set clipboard=unnamed,autoselect
 set noundofile
 
 set list
 
 syntax on
-colorscheme molokai
 
 "バックスペース復活
 set backspace=indent,eol,start
@@ -131,127 +125,11 @@ set encoding=utf-8     " vim内部で通常使用する文字エンコーディ�
 set fileencoding=utf-8    " バッファのファイルエンコーディングを指定
 set fileencodings=utf-8,euc-jp,sjis " 既存ファイルを開く際の文字コード自動判別
 
-" 設定の保存と復元
-autocmd BufWinLeave ?* silent mkview
-autocmd BufWinEnter ?* silent loadview
-
-"------------------------------------------------------------
-" python path
-
-let $PYTHON_DLL = "/usr/local/Cellar/python/2.7.9/Frameworks/Python.framework/Versions/2.7/Python"
-"------------------------------------------------------------
-
 """"""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""
 """""NeoBundlePlugins設定"""""
 """"""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""
-"------------------------------------------------------------------------------------------------------------------------
-" indentLine
-"------------------------------------------------------------------------------------------------------------------------
-" emmet
-" let g:user_emmet_settings = webapi#json#decode(join(readfile(expand('~/.emmet_snippets_custom.json')), "\n"))
-let g:user_emmet_settings = {
-            \   'lang' : 'ja'
-            \   }
-
-let g:user_emmet_settings = {
-            \   'snippets': {
-            \       'filters' : 'html',
-            \       'html5' : '<!DOCTYPE html>
-            \                   <html>
-            \                   <head>
-            \                   <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">
-            \                   <title></title>
-            \                   <meta charset=\"utf-8\">
-            \                   <meta name=\"description\" content=\"\">
-            \                   <meta name=\"author\" content=\"\">
-            \                   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
-            \                   <link rel=\"stylesheet\" href=\"\">
-            \                   <!--&#91;if lt IE 9&#93;>
-            \                   <script src=\"//cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js\"></script>
-            \                   <script src=\"//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js\"></script>
-            \                   <!&#91;endif&#93;-->
-            \                   <link rel=\"shortcut icon\" href=\"\">
-            \                   </head>
-            \                   <body>
-            \                   <!-- Place your content here -->
-            \                   <!-- SCRIPTS -->
-            \                   <!-- Example: <script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script> -->
-            \                   </body>
-            \                   </html>'
-            \   }
-            \ }
-
-
-"------------------------------------------------------------------------------------------------------------------------
-" vim-indent-guides
-set t_Co=256
-" let g:indent_guides_auto_colors = 0
-" autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#a9a9a9   ctermbg=3
-" autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#696969 ctermbg=4
-" autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd   ctermbg=8
-" autocmd VimEnter,Colorscheme * :hi IndentGuidesEven  ctermbg=236
-" let g:indent_guides_enable_on_vim_startup=1
-" let g:indent_guides_guide_size=1
-
-"------------------------------------------------------------------------------------------------------------------------
-" jedi-vim
-" docstringは表示しない
-autocmd FileType python setlocal completeopt-=preview
-
-autocmd FileType python setlocal omnifunc=jedi#completions
-let g:jedi#completions_enabled = 0
-let g:jedi#auto_vim_configuration = 0
-
-if !exists('g:neocomplete#force_omni_input_patterns')
-    let g:neocomplete#force_omni_input_patterns = {}
-endif
-
-" let g:neocomplete#force_omni_input_patterns.python = '\%([^.\t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
-
-let g:neocomplete#force_omni_input_patterns.python = '\h\w*\|[^.\t]\.\w*'
-
-
-"------------------------------------------------------------------------------------------------------------------------
-" neocomplete
-" 自動起動
-let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
-let g:neocomplete_enable_smart_case = 1
-" Set minimum syntax keyword length.
-let g:neocomplete_min_syntax_length = 3
-let g:neocomplete_lock_buffer_name_pattern = '\*ku\*'
-" Plugin key-mappings.
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-" return neocomplete#close_popup() . "\<CR>"
-" For no inserting <CR> key.
-    return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-endfunction
-
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplete#close_popup()
-inoremap <expr><C-e>  neocomplete#cancel_popup()
-
-" Close popup by <Space>.
-inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
-
-" Define dictionary.
-let g:neocomplete_dictionary_filetype_lists = {
-            \ 'default' : ''
-            \ }
-
 "------------------------------------------------------------------------------------------------------------------------
 " lightline
 
@@ -316,54 +194,3 @@ function! MyMode()
     return winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
 
-
-" Plugin key-mappings.
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-" Recommended key-mappings.
-function! s:my_cr_function()
-    return neocomplete#smart_close_popup() . "\<CR>"
-endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-
-"------------------------------------------------------------------------------------------------------------------------
-
-""""""""""""""""""""""""""""""
-" 全角スペースの表示
-" http://inari.hatenablog.com/entry/2014/05/05/231307
-""""""""""""""""""""""""""""""
-function! ZenkakuSpace()
-    highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
-endfunction
-
-if has('syntax')
-    augroup ZenkakuSpace
-        autocmd!
-        autocmd ColorScheme * call ZenkakuSpace()
-        autocmd VimEnter,WinEnter,BufRead * let w:m1=matchadd('ZenkakuSpace', '　')
-    augroup END
-    call ZenkakuSpace()
-endif
-
-"------------------------------------------------------------------------------------------------------------------------
-" quickrun
-let g:quickrun_config = {
-\   "_" : {
-\       "outputter/buffer/split" : ":botright",
-\       "outputter/buffer/close_on_empty" : 1
-\   },
-\}
-
-" ------------------------------------------------------------------------------------------------------------------------
-" evervim
-let g:evervim_devtoken='S=s496:U=569ac2c:E=15a49eacebc:C=152f239a0a8:P=1cd:A=en-devtoken:V=2:H=8747a02285479fddea3486f291c25492'
-
-" ------------------------------------------------------------------------------------------------------------------------
-" markdown view
-au BufRead,BufNewFile *.md set filetype=markdown
-let g:previm_open_cmd = 'open -a Firefox'
-nmap <F5> :PrevimOpen<CR>
