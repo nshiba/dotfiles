@@ -1,0 +1,4 @@
+#!/bin/bash
+
+git config --local user.name "nshiba"
+git config --local user.email "naoya.shiba310@gmail.com"
